@@ -1,10 +1,10 @@
+import logging
 import os
 import sys
 import json
 
 
 def read():
-    config = None
     default_config = {
         "DEFAULT": {
             "NETWORK_API_URL": "https://network.satnogs.org/api/",
@@ -31,14 +31,16 @@ def read():
         },
         "LOGFILE": "glouton.log"
     }
-    try:
-        if os.path.exists(os.path.dirname(sys.argv[0]) + "/../glouton/config.json"):
-            with open(os.path.dirname(sys.argv[0]) + "/../glouton/config.json", 'r') as f:
-                config = json.load(f)
-        else:
-            config = default_config
 
-    except Exception as eee:
-        print("error: ", eee)
-        config = default_config
-    return config
+    config_path = os.path.join(os.path.dirname(sys.argv[0]), "glouton", "config.json")
+
+    try:
+        logging.info(f"Searching for config file: {config_path}")
+        with open(config_path, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        logging.info(f"config.json not found, using defaults: {default_config}")
+        return default_config
+    except Exception as e:
+        logging.error(f"Error reading config: {e}, using default: {default_config}")
+        return default_config

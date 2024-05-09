@@ -1,6 +1,5 @@
 import os
 
 
-def create_dir_if_not_exist(dir):
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+def create_dir_if_not_exist(directory):
+    os.makedirs(directory, exist_ok=True)

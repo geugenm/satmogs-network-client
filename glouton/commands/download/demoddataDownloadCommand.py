@@ -1,4 +1,6 @@
-from glouton.commands.download.downloadObservationCommand import DownloadObservationCommand
+from glouton.commands.download.downloadObservationCommand import (
+    DownloadObservationCommand,
+)
 from glouton.shared import fileHelper
 from glouton.shared.logger import logger
 import os
@@ -14,20 +16,28 @@ class DemoddataDownloadCommand(DownloadObservationCommand):
     def download(self):
         demoddata = self.observation[self.__json_id]
         if not any(demoddata):
-            logger.Info('no demoddata found for the observation ' + str(self.observation['id']) + ' of ' + self.observation['start'])
+            logger.Info(
+                "no demoddata found for the observation "
+                + str(self.observation["id"])
+                + " of "
+                + self.observation["start"]
+            )
             return
 
-        fileHelper.create_dir_if_not_exist(self.full_path)
+        os.makedirs(self.full_path, exist_ok=True)
+
         for demod in demoddata:
-            file_name = ntpath.basename(demod['payload_demod'])
-            full_path_file = self.full_path + os.path.sep + file_name
+            url = demod["payload_demod"]
+            file_name = ntpath.basename(url)
+            full_path_file = os.path.join(self.full_path, file_name)
+
             if os.path.exists(full_path_file):
-                logger.Warning('pass ' + file_name + '... file already exist')
+                logger.Warning("pass " + file_name + "... file already exist")
                 return
 
-            r = self.client.get(demod['payload_demod'])
-            if r.status_code == 200:
-                logger.Info('downloading...' + file_name)
+            response = self.client.get(url)
+            if response.status_code == 200:
+                logger.Info("downloading..." + file_name)
                 with open(full_path_file, "wb") as file:
-                    file.write(r.content)
+                    file.write(response.content)
                 self.runModulesAfterDownload(file_name)

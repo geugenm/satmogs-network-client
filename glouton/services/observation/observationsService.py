@@ -14,16 +14,48 @@ class ObservationsService:
 
     def filter_repositories(self):
         downloadable_data_repos = []
-        all = not self.__cmd.archives and not self.__cmd.waterfalls and not self.__cmd.demoddata
-        if all or self.__cmd.archives:
-            downloadable_data_repos.append(ArchiveRepo(
-                self.__cmd.working_dir, self.__module_service.loadArchiveModules(self.__cmd.archive_modules, 'FOR_EACH'), self.__module_service.loadArchiveModules(self.__cmd.archive_end_modules, 'END')))
-        if all == True or self.__cmd.waterfalls:
-            downloadable_data_repos.append(WaterfallRepo(
-                self.__cmd.working_dir, self.__module_service.loadWaterfallModules(self.__cmd.waterfall_modules, 'FOR_EACH'), self.__module_service.loadWaterfallModules(self.__cmd.waterfall_end_modules, 'END')))
-        if all == True or self.__cmd.demoddata:
-            downloadable_data_repos.append(DemoddataRepo(
-                self.__cmd.working_dir, self.__module_service.loadDemoddataModules(self.__cmd.demoddata_modules, 'FOR_EACH'), self.__module_service.loadDemoddataModules(self.__cmd.demoddata_end_modules, 'END')))
+        all_types = not any(
+            (self.__cmd.archives, self.__cmd.waterfalls, self.__cmd.demoddata)
+        )
+
+        if all_types or self.__cmd.archives:
+            downloadable_data_repos.append(
+                ArchiveRepo(
+                    self.__cmd.working_dir,
+                    self.__module_service.loadArchiveModules(
+                        self.__cmd.archive_modules, "FOR_EACH"
+                    ),
+                    self.__module_service.loadArchiveModules(
+                        self.__cmd.archive_end_modules, "END"
+                    ),
+                )
+            )
+
+        if all_types or self.__cmd.waterfalls:
+            downloadable_data_repos.append(
+                WaterfallRepo(
+                    self.__cmd.working_dir,
+                    self.__module_service.loadWaterfallModules(
+                        self.__cmd.waterfall_modules, "FOR_EACH"
+                    ),
+                    self.__module_service.loadWaterfallModules(
+                        self.__cmd.waterfall_end_modules, "END"
+                    ),
+                )
+            )
+
+        if all_types or self.__cmd.demoddata:
+            downloadable_data_repos.append(
+                DemoddataRepo(
+                    self.__cmd.working_dir,
+                    self.__module_service.loadDemoddataModules(
+                        self.__cmd.demoddata_modules, "FOR_EACH"
+                    ),
+                    self.__module_service.loadDemoddataModules(
+                        self.__cmd.demoddata_end_modules, "END"
+                    ),
+                )
+            )
 
         return downloadable_data_repos
 

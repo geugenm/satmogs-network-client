@@ -11,9 +11,11 @@ class TelemetryService:
         self.__telemetry_repo = TelemetryRepo(self.__cmd, repos)
 
     def filter_repositories(self):
-        downloadable_data_repos = []
-        downloadable_data_repos.append(
-            FrameRepo(self.__cmd.working_dir, self.__module_service.loadFrameModules(self.__cmd.frame_modules, 'FOR_EACH'), self.__module_service.loadFrameModules(self.__cmd.frame_end_modules, 'END')))
+        downloadable_data_repos = [FrameRepo(self.__cmd.working_dir,
+                                             self.__module_service.loadFrameModules(self.__cmd.frame_modules,
+                                                                                    'FOR_EACH'),
+                                             self.__module_service.loadFrameModules(self.__cmd.frame_end_modules,
+                                                                                    'END'))]
 
         return downloadable_data_repos
 
