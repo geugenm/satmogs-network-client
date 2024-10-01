@@ -13,26 +13,31 @@ class ObservationRepo:
         self.__threads = []
 
     def extract(self):
-        client = SatnogNetworkClient()
+        client: SatnogNetworkClient = SatnogNetworkClient()
         threads = []
         page_counter = 0
         end_signal = Event()
+
         while True:
             for p in range(1, 5):
                 page = page_counter + p
+
                 url_params = self.__url_param_builder(
                     self.__cmd.start_date, self.__cmd.end_date, page)
-                pageScanner = PageScanWorker(
+
+                page_scanner = PageScanWorker(
                     client, self.__cmd, self.__repos, self.OBSERVATION_URL, url_params, p, end_signal)
-                t = threadHelper.create_thread(pageScanner.scan)
+                print(f"Starting PageScanWorker {p} for page {page} - {url_params}")
+
+                t = threadHelper.create_thread(page_scanner.scan)
                 threads.append(t)
 
             threadHelper.wait(threads)
-            if end_signal.isSet():
+            if end_signal.is_set():
                 break
 
             page_counter += 4
-        print("\ndownloading started (Ctrl + C to stop)...")
+        print("downloading started (Ctrl + C to stop)...")
         self.__register_end_command()
         self.__create_workers_and_wait()
 
