@@ -22,27 +22,28 @@ class TelemetryRepo:
         end_signal: Event = Event()
 
         page_counter: int = 0
+
+        threads: List[Thread] = []
+
         while True:
-            threads: List[Thread] = [
-                thread_helper.create_thread(
-                    PageScanWorker(
-                        client,
-                        self.__cmd,
-                        self.__repos,
-                        self.TELEMETRY_URL,
-                        self.__url_param_builder(page_counter + p),
-                        p,
-                        end_signal,
-                    ).scan
+            for p in range(1, 5):
+                page: int = page_counter + p
+                page_scanner: PageScanWorker = PageScanWorker(
+                    client,
+                    self.__cmd,
+                    self.__repos,
+                    self.TELEMETRY_URL,
+                    self.__url_param_builder(page),
+                    end_signal,
                 )
-                for p in range(1, 2)
-            ]
+                thread: Thread = thread_helper.create_thread(page_scanner.scan)
+                threads.append(thread)
 
             threadHelper.wait(threads)
             if end_signal.isSet():
                 break
 
-            page_counter += 1
+            page_counter += 4
 
         logging.info("Telemetry data extraction complete. Starting downloads.")
         self.__register_end_command()

@@ -1,6 +1,7 @@
 import os
 from queue import Queue
-from threading import Event
+from threading import Event, Thread
+from typing import List
 
 from glouton.commands.download.downloadCommandParams import DownloadCommandParams
 from glouton.commands.download.frameDownloadCommand import FrameDownloadCommand
@@ -41,19 +42,19 @@ class FrameRepo(Downloadable):
             self.__frame_end_modules_commands.put(frame_end_module_command)
 
     def create_worker(self):
-        threads = []
-        downloadWorker = DownloadWorker(
+        threads: List[Thread] = []
+        download_worker: DownloadWorker = DownloadWorker(
             self.__frame_commands, self.__download_status, None)
-        threads.append(threadHelper.create_thread(downloadWorker.execute))
+        threads.append(thread_helper.create_thread(download_worker.execute))
         if self.__modules is not None:
-            moduleWorker = ModuleWorker(
+            module_worker: ModuleWorker = ModuleWorker(
                 self.__frame_modules_commands, self.__download_status, self.__download_end_status)
-            threads.append(threadHelper.create_thread(moduleWorker.execute))
+            threads.append(thread_helper.create_thread(module_worker.execute))
 
         if self.__end_modules is not None:
-            endWorker = EndModuleWorker(
+            end_worker: EndModuleWorker = EndModuleWorker(
                 self.__frame_end_modules_commands, self.__download_end_status)
-            threads.append(threadHelper.create_thread(endWorker.execute()))
+            threads.append(thread_helper.create_thread(end_worker.execute()))
 
         return threads
 
