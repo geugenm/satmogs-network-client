@@ -19,7 +19,7 @@ class PageScanWorker:
 
         response = self.__client.get_from_base(self.PATH, params)
         if response.status_code != 200:
-            logger.Error(f"{job_string}: failed to fetch data, status_code: {response.status_code}")
+            logger.Error(f"{job_string}: failed to fetch data from {self.PATH + params}, status_code: {response.status_code}")
             self.__end_signal.set()
             return
 
