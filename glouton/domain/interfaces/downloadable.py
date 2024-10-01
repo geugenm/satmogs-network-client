@@ -1,4 +1,3 @@
-
 class Downloadable:
     def create_worker(self):
         raise NotImplementedError()

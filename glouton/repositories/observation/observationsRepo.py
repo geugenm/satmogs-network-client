@@ -1,9 +1,8 @@
-from queue import Queue
-from glouton.shared.logger import logger
-from glouton.workers.pageScanWorker import PageScanWorker
-from glouton.shared import threadHelper
-from glouton.infrastructure.satnogNetworkClient import SatnogNetworkClient
 from threading import Event
+
+from glouton.infrastructure.satnogNetworkClient import SatnogNetworkClient
+from glouton.shared import threadHelper
+from glouton.workers.pageScanWorker import PageScanWorker
 
 
 class ObservationRepo:
@@ -33,7 +32,7 @@ class ObservationRepo:
                 break
 
             page_counter += 4
-        print("\ndownloading started (Ctrl + C to stop)...\t~(  ^o^)~")
+        print("\ndownloading started (Ctrl + C to stop)...")
         self.__register_end_command()
         self.__create_workers_and_wait()
 

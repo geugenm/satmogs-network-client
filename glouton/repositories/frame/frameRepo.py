@@ -1,16 +1,16 @@
+import os
 from queue import Queue
-from threading import Thread
+from threading import Event
+
 from glouton.commands.download.downloadCommandParams import DownloadCommandParams
 from glouton.commands.download.frameDownloadCommand import FrameDownloadCommand
 from glouton.commands.module.endModuleCommand import EndModuleCommand
 from glouton.commands.module.endModuleCommandParams import EndModuleCommandParams
-from glouton.workers.downloadWorker import DownloadWorker
-from glouton.workers.moduleWorker import ModuleWorker
-from glouton.workers.endModuleWorker import EndModuleWorker
 from glouton.domain.interfaces.downloadable import Downloadable
 from glouton.shared import threadHelper
-from threading import Event
-import os
+from glouton.workers.downloadWorker import DownloadWorker
+from glouton.workers.endModuleWorker import EndModuleWorker
+from glouton.workers.moduleWorker import ModuleWorker
 
 
 class FrameRepo(Downloadable):

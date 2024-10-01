@@ -1,6 +1,7 @@
 import importlib
-from glouton.shared.logger import logger
+
 from glouton.shared import config
+from glouton.shared.logger import logger
 
 
 class ModuleService:

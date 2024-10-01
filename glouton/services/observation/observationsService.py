@@ -1,8 +1,8 @@
-from glouton.services.module.moduleService import ModuleService
-from glouton.repositories.demoddata.demoddataRepo import DemoddataRepo
 from glouton.repositories.archive.archiveRepo import ArchiveRepo
-from glouton.repositories.waterfall.waterfallRepo import WaterfallRepo
+from glouton.repositories.demoddata.demoddataRepo import DemoddataRepo
 from glouton.repositories.observation.observationsRepo import ObservationRepo
+from glouton.repositories.waterfall.waterfallRepo import WaterfallRepo
+from glouton.services.module.moduleService import ModuleService
 
 
 class ObservationsService:

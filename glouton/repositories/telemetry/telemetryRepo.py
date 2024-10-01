@@ -1,9 +1,8 @@
-from queue import Queue
-from glouton.workers.pageScanWorker import PageScanWorker
+from threading import Event
+
 from glouton.infrastructure.satnogDbClient import SatnogDbClient
 from glouton.shared import threadHelper
-from glouton.shared.logger import logger
-from threading import Event
+from glouton.workers.pageScanWorker import PageScanWorker
 
 
 class TelemetryRepo:

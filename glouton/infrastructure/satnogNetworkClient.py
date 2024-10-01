@@ -1,6 +1,8 @@
-from glouton.infrastructure.satnogClient import SatnogClient
 import os
+
 import requests
+
+from glouton.infrastructure.satnogClient import SatnogClient
 
 
 class SatnogNetworkClient(SatnogClient):

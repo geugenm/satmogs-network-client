@@ -1,9 +1,9 @@
+import ntpath
+import os
+
 from glouton.commands.download.downloadObservationCommand import DownloadObservationCommand
 from glouton.shared import fileHelper
 from glouton.shared.logger import logger
-import os
-import ntpath
-import requests
 
 
 class WaterfallDownloadCommand(DownloadObservationCommand):
@@ -14,7 +14,9 @@ class WaterfallDownloadCommand(DownloadObservationCommand):
     def download(self):
         url = self.observation[self.__json_id]
         if not url:
-            logger.Info('no waterfall found for the observation ' + str(self.observation['id']) + ' of ' + self.observation['start'])
+            logger.Info(
+                'no waterfall found for the observation ' + str(self.observation['id']) + ' of ' + self.observation[
+                    'start'])
             return
 
         fileHelper.create_dir_if_not_exist(self.full_path)
@@ -23,7 +25,7 @@ class WaterfallDownloadCommand(DownloadObservationCommand):
         if os.path.exists(full_path_file):
             logger.Warning('pass ' + file_name + '... file already exist')
             return
-            
+
         r = self.client.get(url)
         if r.status_code == 200:
             logger.Info('downloading...' + file_name)

@@ -1,16 +1,16 @@
+import os
 from queue import Queue
-from threading import Thread
-from glouton.commands.download.downloadCommandParams import DownloadCommandParams
+from threading import Event
+
 from glouton.commands.download.demoddataDownloadCommand import DemoddataDownloadCommand
+from glouton.commands.download.downloadCommandParams import DownloadCommandParams
 from glouton.commands.module.endModuleCommand import EndModuleCommand
 from glouton.commands.module.endModuleCommandParams import EndModuleCommandParams
-from glouton.workers.downloadWorker import DownloadWorker
-from glouton.workers.moduleWorker import ModuleWorker
-from glouton.workers.endModuleWorker import EndModuleWorker
 from glouton.domain.interfaces.downloadable import Downloadable
 from glouton.shared import threadHelper
-from threading import Event
-import os
+from glouton.workers.downloadWorker import DownloadWorker
+from glouton.workers.endModuleWorker import EndModuleWorker
+from glouton.workers.moduleWorker import ModuleWorker
 
 
 class DemoddataRepo(Downloadable):
@@ -45,7 +45,8 @@ class DemoddataRepo(Downloadable):
     def create_worker(self):
         threads = []
         downloadWorker = DownloadWorker(
-            self.__demoddata_commands, self.__download_status, self.__is_download_finished if self.__modules is None else None)
+            self.__demoddata_commands, self.__download_status,
+            self.__is_download_finished if self.__modules is None else None)
         threads.append(threadHelper.create_thread(downloadWorker.execute))
         if self.__modules is not None:
             moduleWorker = ModuleWorker(

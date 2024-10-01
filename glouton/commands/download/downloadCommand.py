@@ -1,7 +1,5 @@
-from glouton.infrastructure.satnogNetworkClient import SatnogNetworkClient
-from glouton.commands.module.moduleCommandParams import ModuleCommandParams
-from glouton.commands.module.moduleCommand import ModuleCommand
 import os
+
 
 class DownloadCommand:
     def __init__(self, params, modules_commands):

@@ -1,6 +1,6 @@
-from glouton.services.module.moduleService import ModuleService
 from glouton.repositories.frame.frameRepo import FrameRepo
 from glouton.repositories.telemetry.telemetryRepo import TelemetryRepo
+from glouton.services.module.moduleService import ModuleService
 
 
 class TelemetryService:

@@ -1,6 +1,7 @@
-from glouton.modules.observationModuleBase import ObservationModuleBase
-from time import strftime, strptime
 from datetime import datetime
+
+from glouton.modules.observationModuleBase import ObservationModuleBase
+
 
 # This module writes out decoded telemetry frames in the same format
 # provided by the telemetry download option on db.satnogs.org.

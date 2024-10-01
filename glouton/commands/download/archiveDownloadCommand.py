@@ -1,10 +1,10 @@
+import ntpath
+import os
+
 from glouton.commands.download.downloadObservationCommand import (
     DownloadObservationCommand,
 )
-from glouton.shared import fileHelper
 from glouton.shared.logger import logger
-import os
-import ntpath
 
 
 class ArchiveDownloadCommand(DownloadObservationCommand):

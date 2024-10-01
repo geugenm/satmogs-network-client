@@ -1,7 +1,8 @@
-from glouton.modules.telemetryModuleBase import TelemetryModuleBase
-from glouton.modules.painaniDecoder import PainaniDecoder
 import binascii
 import os
+
+from glouton.modules.painaniDecoder import PainaniDecoder
+from glouton.modules.telemetryModuleBase import TelemetryModuleBase
 
 
 class PainaniImageDecoder(TelemetryModuleBase):

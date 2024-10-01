@@ -1,6 +1,6 @@
-from glouton.shared import config
 import os
-import requests
+
+from glouton.shared import config
 
 
 class SatnogClient:

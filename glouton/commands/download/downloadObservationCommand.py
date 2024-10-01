@@ -1,8 +1,8 @@
-from glouton.infrastructure.satnogNetworkClient import SatnogNetworkClient
 from glouton.commands.download.downloadCommand import DownloadCommand
-from glouton.commands.module.observationModuleCommandParams import ObservationModuleCommandParams
 from glouton.commands.module.observationModuleCommand import ObservationModuleCommand
-import os
+from glouton.commands.module.observationModuleCommandParams import ObservationModuleCommandParams
+from glouton.infrastructure.satnogNetworkClient import SatnogNetworkClient
+
 
 class DownloadObservationCommand(DownloadCommand):
     def __init__(self, params, observation, modules_commands):

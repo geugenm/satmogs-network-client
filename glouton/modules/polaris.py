@@ -1,8 +1,8 @@
+import json
+import os
 
 from glouton.modules.telemetryModuleBase import TelemetryModuleBase
 from glouton.shared.logger import logger
-import json
-import os
 
 
 class Polaris(TelemetryModuleBase):

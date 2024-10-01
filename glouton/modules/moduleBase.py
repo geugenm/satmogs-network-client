@@ -1,5 +1,3 @@
-import os
-
 class ModuleBase:
     def __init__(self, working_dir):
         self.working_dir = working_dir
