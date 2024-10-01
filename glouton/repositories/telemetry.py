@@ -25,29 +25,25 @@ class TelemetryRepo:
 
         threads: List[Thread] = []
 
-        while True:
-            for p in range(1, 5):
-                page: int = page_counter + p
-                page_scanner: PageScanWorker = PageScanWorker(
-                    client,
-                    self.__cmd,
-                    self.__repos,
-                    self.TELEMETRY_URL,
-                    self.__url_param_builder(page),
-                    end_signal,
-                )
-                thread: Thread = thread_helper.create_thread(page_scanner.scan)
-                threads.append(thread)
+        page_scanner: PageScanWorker = PageScanWorker(
+            client,
+            self.__cmd,
+            self.__repos,
+            self.TELEMETRY_URL,
+            self.__url_param_builder(page_counter),
+            end_signal,
+        )
 
-            thread_helper.wait(threads)
+        while True:
+            page_scanner.scan_page(page_counter)
             if end_signal.is_set():
                 break
 
-            page_counter += 4
+            page_counter += 1
 
-        logging.info("Telemetry data extraction complete. Starting downloads.")
-        self.__register_end_command()
-        self.__create_workers_and_wait()
+            self.__register_end_command()
+            self.__create_workers_and_wait()
+
 
     def __register_end_command(self) -> None:
         for repo in self.__repos:

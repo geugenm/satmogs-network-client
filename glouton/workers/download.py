@@ -1,4 +1,7 @@
 import logging
+from queue import Queue
+
+from glouton.commands.download.downloadCommand import DownloadCommand
 
 
 class DownloadWorker:
@@ -11,11 +14,12 @@ class DownloadWorker:
         self.__download_status.set()
         try:
             while command := self._commands.get():
+                logging.info(f"Downloading {command.full_path}, type: {type(command)}")
                 command.download()
                 self._commands.task_done()
 
         except Exception as ex:
-            logging.error(ex)
+            logging.error(f"Error while downloading: {ex}")
 
         finally:
             self.__download_status.clear()

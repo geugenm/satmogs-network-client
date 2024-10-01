@@ -46,6 +46,7 @@ class FrameRepo(Downloadable):
         download_worker: DownloadWorker = DownloadWorker(
             self.__frame_commands, self.__download_status, None)
         threads.append(thread_helper.create_thread(download_worker.execute))
+
         if self.__modules is not None:
             module_worker: ModuleWorker = ModuleWorker(
                 self.__frame_modules_commands, self.__download_status, self.__download_end_status)

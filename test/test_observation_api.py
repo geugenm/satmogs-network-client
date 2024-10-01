@@ -3,6 +3,7 @@ from datetime import datetime
 import pytest
 
 from glouton.domain.parameters.programCmd import ProgramCmd
+from glouton.services.observation import ObservationsService
 from glouton.services.telemetry import TelemetryService
 
 
@@ -39,7 +40,7 @@ def glouton_conf() -> ProgramCmd:
 @pytest.mark.parametrize(
     "norad_id, start_date, end_date",
     [
-        ("44420", "2020-01-01T00:00:00", "2020-01-01T00:00:00"),
+        ("44420", "2020-01-01T00:00:00", "2020-02-01T00:00:00"),
     ],
 )
 def test_observations_service_extract(
@@ -49,5 +50,5 @@ def test_observations_service_extract(
     glouton_conf.start_date = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
     glouton_conf.end_date = datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S")
 
-    telemetry_service: TelemetryService = TelemetryService(glouton_conf)
-    telemetry_service.extract()
+    observation_service: ObservationsService = ObservationsService(glouton_conf)
+    observation_service.extract()
