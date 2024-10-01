@@ -5,8 +5,8 @@ from typing import List, Dict
 
 from glouton.domain.parameters.programCmd import ProgramCmd
 from glouton.infrastructure.satnogDbClient import SatnogDbClient
-from glouton.shared import threadHelper
-from glouton.workers.pageScanWorker import PageScanWorker
+from glouton.shared import thread_helper
+from glouton.workers.page_scan import PageScanWorker
 
 
 class TelemetryRepo:
@@ -39,8 +39,8 @@ class TelemetryRepo:
                 thread: Thread = thread_helper.create_thread(page_scanner.scan)
                 threads.append(thread)
 
-            threadHelper.wait(threads)
-            if end_signal.isSet():
+            thread_helper.wait(threads)
+            if end_signal.is_set():
                 break
 
             page_counter += 4
@@ -57,7 +57,7 @@ class TelemetryRepo:
     def __create_workers_and_wait(self) -> None:
         for repo in self.__repos:
             self.__threads.extend(repo.create_worker())
-        threadHelper.wait(self.__threads)
+        thread_helper.wait(self.__threads)
 
     def __url_param_builder(self, page: int) -> Dict[str, str]:
         return {

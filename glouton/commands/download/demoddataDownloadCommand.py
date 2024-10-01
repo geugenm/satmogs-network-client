@@ -1,10 +1,10 @@
+import logging
 import ntpath
 import os
 
 from glouton.commands.download.downloadObservationCommand import (
     DownloadObservationCommand,
 )
-from glouton.shared.logger import logger
 
 
 class DemoddataDownloadCommand(DownloadObservationCommand):
@@ -15,7 +15,7 @@ class DemoddataDownloadCommand(DownloadObservationCommand):
     def download(self):
         demoddata = self.observation[self.__json_id]
         if not any(demoddata):
-            logger.Info(
+            logging.info(
                 "no demoddata found for the observation "
                 + str(self.observation["id"])
                 + " of "
@@ -31,12 +31,12 @@ class DemoddataDownloadCommand(DownloadObservationCommand):
             full_path_file = os.path.join(self.full_path, file_name)
 
             if os.path.exists(full_path_file):
-                logger.Warning("pass " + file_name + "... file already exist")
+                logging.warning("pass " + file_name + "... file already exist")
                 return
 
             response = self.client.get(url)
             if response.status_code == 200:
-                logger.Info("downloading..." + file_name)
+                logging.info("downloading..." + file_name)
                 with open(full_path_file, "wb") as file:
                     file.write(response.content)
                 self.runModulesAfterDownload(file_name)

@@ -1,6 +1,6 @@
+import logging
+import pathlib
 from glouton.commands.download.downloadTelemetryCommand import DownloadTelemetryCommand
-from glouton.shared import fileHelper
-from glouton.shared.logger import logger
 
 
 class FrameDownloadCommand(DownloadTelemetryCommand):
@@ -11,9 +11,9 @@ class FrameDownloadCommand(DownloadTelemetryCommand):
     def download(self):
         frame = self.telemetry[self.__json_id]
         if not frame:
-            logger.Info('no frame found for the telemetry of ' + self.telemetry['timestamp'])
+            logging.info('no frame found for the telemetry of ' + self.telemetry['timestamp'])
             return
 
-        fileHelper.create_dir_if_not_exist(self.full_path)
+        pathlib.Path(self.full_path).mkdir(parents=True, exist_ok=True)
 
         self.runModulesAfterDownload(frame)

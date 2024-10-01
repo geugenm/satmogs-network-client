@@ -2,11 +2,10 @@
 
 from datetime import datetime
 from pathlib import Path
-from glouton.services.observation.observationsService import ObservationsService
-from glouton.services.telemetry.telemetryService import TelemetryService
-from glouton.services.session.sessionService import SessionService
+from glouton.services.telemetry import TelemetryService
+from glouton.services.session import SessionService
 from glouton.domain.parameters.programCmd import ProgramCmd
-from glouton.shared.logger import logger
+import logging
 import argparse
 import sys
 
@@ -156,25 +155,16 @@ if __name__ == "__main__":
                              args.transmitter)
             session.save_program_parameters(cmd)
 
-        if args.db is False:
-            obs = ObservationsService(cmd)
-            obs.extract()
-        else:
-            tlm = TelemetryService(cmd)
-            tlm.extract()
+        tlm = TelemetryService(cmd)
+        tlm.extract()
 
-        logger.Info("\n\nall jobs are finished\t(   ^ o^)\m/")
-        logger.Info("data are stored in " +
-                    str(Path(args.working_dir).absolute()))
+        logging.info("\n\nall jobs are finished\t(   ^ o^)\m/")
+        logging.info("data are stored in " +
+                     str(Path(args.working_dir).absolute()))
     except KeyboardInterrupt:
         print("Exit...")
         sys.exit()
     except ValueError as e:
-        logger.Error(e)
+        logging.error(e)
     except Exception as ex:
-        logger.Error(ex)
-
-# -s 2017-05-20T00:51:54 -e 2017-09-20T00:51:54 -n 25338
-# -s 2018-01-20T00:51:54 -e 2018-01-21T00:51:54 -n 28654
-# -s 2017-09-19T00:51:54 -e 2017-09-20T00:51:54 -n 25338 --waterfall-module TestModule
-# -s 2019-04-09T00:51:54 -e 2019-04-13T00:51:54 -n 28654
+        logging.error(ex)

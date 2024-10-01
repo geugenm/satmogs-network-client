@@ -1,5 +1,5 @@
-from glouton.services.telemetry.telemetryService import TelemetryService
-from glouton.repositories.frame.frameRepo import FrameRepo
+from glouton.services.telemetry import TelemetryService
+from glouton.repositories.frame import FrameRepo
 from glouton.domain.parameters.programCmd import ProgramCmd
 
 

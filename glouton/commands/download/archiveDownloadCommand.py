@@ -1,10 +1,10 @@
+import logging
 import ntpath
 import os
 
 from glouton.commands.download.downloadObservationCommand import (
     DownloadObservationCommand,
 )
-from glouton.shared.logger import logger
 
 
 class ArchiveDownloadCommand(DownloadObservationCommand):
@@ -17,7 +17,7 @@ class ArchiveDownloadCommand(DownloadObservationCommand):
     def download(self):
         url = self.observation[self.__json_id]
         if not url:
-            logger.Info(
+            logging.info(
                 f"No archive found for observation {self.observation['id']} ({self.observation['start']})"
             )
             return
@@ -27,12 +27,12 @@ class ArchiveDownloadCommand(DownloadObservationCommand):
         full_path_file = os.path.join(self.full_path, file_name)
 
         if os.path.exists(full_path_file):
-            logger.Warning("pass " + file_name + "... file already exist")
+            logging.warning("pass " + file_name + "... file already exist")
             return
 
         response = self.client.get(url)
         if response.status_code == 200:
-            logger.Info(f"Downloading archive... {file_name}")
+            logging.info(f"Downloading archive... {file_name}")
             with open(full_path_file, "wb") as file:
                 file.write(response.content)
             self.runModulesAfterDownload(file_name)

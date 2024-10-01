@@ -8,10 +8,10 @@ from glouton.commands.download.frameDownloadCommand import FrameDownloadCommand
 from glouton.commands.module.endModuleCommand import EndModuleCommand
 from glouton.commands.module.endModuleCommandParams import EndModuleCommandParams
 from glouton.domain.interfaces.downloadable import Downloadable
-from glouton.shared import threadHelper
-from glouton.workers.downloadWorker import DownloadWorker
-from glouton.workers.endModuleWorker import EndModuleWorker
-from glouton.workers.moduleWorker import ModuleWorker
+from glouton.shared import thread_helper
+from glouton.workers.download import DownloadWorker
+from glouton.workers.end_module import EndModuleWorker
+from glouton.workers.module import ModuleWorker
 
 
 class FrameRepo(Downloadable):

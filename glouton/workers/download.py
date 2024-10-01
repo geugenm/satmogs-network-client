@@ -1,4 +1,4 @@
-from glouton.shared.logger import logger
+import logging
 
 
 class DownloadWorker:
@@ -15,7 +15,7 @@ class DownloadWorker:
                 self._commands.task_done()
 
         except Exception as ex:
-            logger.Error(ex)
+            logging.error(ex)
 
         finally:
             self.__download_status.clear()

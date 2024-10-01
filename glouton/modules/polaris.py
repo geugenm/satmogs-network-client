@@ -1,8 +1,8 @@
 import json
+import logging
 import os
 
 from glouton.modules.telemetryModuleBase import TelemetryModuleBase
-from glouton.shared.logger import logger
 
 
 class Polaris(TelemetryModuleBase):
@@ -39,4 +39,4 @@ class Polaris(TelemetryModuleBase):
             print('Timestamp ' + timestamp + ' Frame ' +
                   frame + ' count ' + str(self.count))
         except Exception as ex:
-            logger.Error(ex)
+            logging.error(ex)

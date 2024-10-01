@@ -1,9 +1,12 @@
+from datetime import datetime
+
+
 class ProgramCmd:
     def __init__(self,
                  norad_id,
                  ground_station_id,
-                 start_date,
-                 end_date,
+                 start_date: datetime,
+                 end_date: datetime,
                  observation_status,
                  working_dir,
                  archives,

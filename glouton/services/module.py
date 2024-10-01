@@ -1,7 +1,7 @@
 import importlib
+import logging
 
 from glouton.shared import config
-from glouton.shared.logger import logger
 
 
 class ModuleService:
@@ -10,42 +10,42 @@ class ModuleService:
         self.__config = config.read()
 
     def loadDemoddataModules(self, demoddata_modules, when):
-        logger.Info('(' + when + ') Demoddata module(s) loading :')
-        demoddata_modules = self.__getModulesFromConfig(
+        logging.info('(' + when + ') Demoddata module(s) loading :')
+        demoddata_modules = self.__get_modules_from_config(
             demoddata_modules, when, 'DEMODDATA')
-        demoddata_modules = self.__getModulesFromConfig(
+        demoddata_modules = self.__get_modules_from_config(
             demoddata_modules, when, 'FOR_ALL_OBSERVATION')
 
-        return self.__loadModule(demoddata_modules)
+        return self.__load_module(demoddata_modules)
 
     def loadArchiveModules(self, archive_modules, when):
-        logger.Info('(' + when + ') Archive module(s) loading :')
-        archive_modules = self.__getModulesFromConfig(
+        logging.info('(' + when + ') Archive module(s) loading :')
+        archive_modules = self.__get_modules_from_config(
             archive_modules, when, 'ARCHIVE')
-        archive_modules = self.__getModulesFromConfig(
+        archive_modules = self.__get_modules_from_config(
             archive_modules, when, 'FOR_ALL_OBSERVATION')
 
-        return self.__loadModule(archive_modules)
+        return self.__load_module(archive_modules)
 
     def loadWaterfallModules(self, waterfall_modules, when):
-        logger.Info('(' + when + ') Waterfall module(s) loading :')
-        waterfall_modules = self.__getModulesFromConfig(
+        logging.info('(' + when + ') Waterfall module(s) loading :')
+        waterfall_modules = self.__get_modules_from_config(
             waterfall_modules, when, 'WATERFALL')
-        waterfall_modules = self.__getModulesFromConfig(
+        waterfall_modules = self.__get_modules_from_config(
             waterfall_modules, when, 'FOR_ALL_OBSERVATION')
 
-        return self.__loadModule(waterfall_modules)
+        return self.__load_module(waterfall_modules)
 
     def loadFrameModules(self, frame_modules, when):
-        logger.Info('(' + when + ') Frame module(s) loading :')
-        frame_modules = self.__getModulesFromConfig(
+        logging.info('(' + when + ') Frame module(s) loading :')
+        frame_modules = self.__get_modules_from_config(
             frame_modules, when, 'FRAME')
 
-        return self.__loadModule(frame_modules)
+        return self.__load_module(frame_modules)
 
-    def __loadModule(self, modules):
+    def __load_module(self, modules):
         if modules is None:
-            logger.Info('No module list found')
+            logging.info('No module list found')
             return None
 
         loaded_modules = []
@@ -54,14 +54,14 @@ class ModuleService:
                 'glouton.modules.' + name.lower())
             module = getattr(loaded_module, name)
             loaded_modules.append(module(self.__working_dir))
-            logger.Info('module : ' + name + ' loaded')
+            logging.info('module : ' + name + ' loaded')
         return loaded_modules
 
-    def __getModulesFromConfig(self, modules, when, config_array_name):
+    def __get_modules_from_config(self, modules, when, config_array_name):
         try:
             modules_from_config = self.__config['MODULES'][when][config_array_name]
-        except:
-            logger.Warning('config.json : modules bad format')
+        except Exception as exception:
+            logging.warning('config.json : modules bad format: ' + str(exception))
             modules_from_config = []
 
         if len(modules_from_config) == 0 and modules is None:
@@ -75,7 +75,7 @@ class ModuleService:
 
         for module in modules_from_config:
             if module in modules:
-                logger.Warning('warning : ' + module + ' already referenced.')
+                logging.warning('warning : ' + module + ' already referenced.')
 
             modules.append(module)
 
