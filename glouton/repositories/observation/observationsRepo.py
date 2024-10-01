@@ -7,7 +7,7 @@ from glouton.workers.pageScanWorker import PageScanWorker
 
 class ObservationRepo:
     def __init__(self, cmd, repos):
-        self.OBSERVATION_URL = 'observations/'
+        self.OBSERVATION_URL = 'telemetry/'
         self.__repos = repos
         self.__cmd = cmd
         self.__threads = []
