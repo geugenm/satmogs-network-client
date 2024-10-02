@@ -1,17 +1,14 @@
 import logging
 import threading
 from queue import Queue
-from typing import Optional
-
-from glouton.commands.download.downloadCommand import DownloadCommand
 
 
 class DownloadWorker:
     def __init__(
             self,
-            queue: "Queue[DownloadCommand]",
+            queue: "Queue",
             download_status: threading.Event,
-            is_download_finished: Optional[threading.Event] = None,
+            is_download_finished: threading.Event = None,
     ) -> None:
 
         self._commands = queue

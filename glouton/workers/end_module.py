@@ -2,16 +2,13 @@ import logging
 import threading
 from queue import Queue
 
-from glouton.commands.module.endModuleCommand import EndModuleCommand
-
-
 class EndModuleWorker:
     def __init__(
         self,
-        queue: Queue[EndModuleCommand],
+        queue: Queue,
         download_end_status: threading.Event,
     ) -> None:
-        self._commands: Queue[EndModuleCommand] = queue
+        self._commands: Queue = queue
         self._download_end_status: threading.Event = download_end_status
 
     def execute(self) -> None:
