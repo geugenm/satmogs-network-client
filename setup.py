@@ -1,30 +1,38 @@
 from setuptools import setup, find_packages
-from codecs import open
-from os import path
+from pathlib import Path
 
-here = path.abspath(path.dirname(__file__))
+here = Path(__file__).resolve().parent
 
-# Get the long description from the README file
-with open(path.join(here, 'readme.md'), encoding='utf-8') as f:
-    long_description = f.read()
+with (here / 'readme.md').open(encoding='utf-8') as readme:
+    long_description = readme.read()
+
+def load_requirements(file_name):
+    with (here / file_name).open(encoding='utf-8') as f:
+        return f.read().splitlines()
 
 setup(
-    version="0.12.0",
-    name="glouton",
-    description="`Glouton is a cli program which helps you downloading satnogs data`",
-    url="https://github.com/deckbsd/glouton-satnogs-data-downloader.git",
+    version="0.1.0",
+    name="satnogs_network_client",
+    description="A Python client for interacting with the SATNOGS Network API.",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     license="MIT",
-    author="deckbsd",
-    install_requires=["requests"],
-    python_requires='>=3',
-    extras_require={"test": ["pytest"]},
+    author="evgeniy.gleba",
+    install_requires=load_requirements('requirements.txt'),
+    python_requires='>=3.6',
+    extras_require={
+        "test": ["pytest"],
+        "dev": ["black", "flake8"],
+    },
     packages=find_packages(exclude=["tests", "docs"]),
-    data_files=[('glouton', ['glouton/config.json'])],
-    scripts=['bin/glouton'],
-    keywords="satnogs, telemetry, satellite, archive, data, db, download",
+    keywords="satnogs telemetry satellite archive data network download",
     classifiers=[
-        "Development Status :: 3 - Alpha", "Intended Audience :: Developers",
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License"
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Natural Language :: English",
+        "Topic :: Software Development :: Libraries :: Python Modules"
     ],
 )
