@@ -105,6 +105,7 @@ def _parse_response(
         *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[PaginatedObservationList]:
     if response.status_code == HTTPStatus.OK:
+
         # Hack: The SatNOGS OpenAPI documentation is misleading regarding pagination.
         # The 'next' and 'previous' links are not included in the JSON response body,
         # but instead are provided in the response headers.
