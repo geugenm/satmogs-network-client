@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "api"
-version = "0.0.0"
+name = "satnogs-network-api"
+version = "1.0.0"
 description = "A client library for accessing "
 authors = []
 readme = "README.md"
 packages = [
-    {include = "_client"},
+    {include = "client"},
 ]
 include = ["CHANGELOG.md", "client/py.typed"]
 

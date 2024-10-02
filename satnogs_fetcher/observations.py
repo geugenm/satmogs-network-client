@@ -8,7 +8,8 @@ from urllib.parse import urlparse, parse_qs, ParseResult
 from api.client import AuthenticatedClient
 from api.client.api.observations import observations_list
 from api.client.models import paginated_observation_list, Observation
-from satnogs_network_client.dump_hex_to_csv import parse_to_csv
+
+from satnogs_fetcher.dump_hex_to_csv import parse_to_csv
 
 
 def extract_cursor(full_url: str) -> str:
@@ -28,7 +29,7 @@ def download(observations: list[Observation], cache_dir: pathlib.Path) -> None:
                 retrieve_result: tuple[str, HTTPMessage] = urllib.request.urlretrieve(data.payload_demod,
                                                                                       cache_dir / filename)
 
-                print(f"Downloaded {retrieve_result[0]}")
+                print(f"downloaded {retrieve_result[0]}")
 
                 parse_to_csv(file_name=filename, full_path=cache_dir)
 
