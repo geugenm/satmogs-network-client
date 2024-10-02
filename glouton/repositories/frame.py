@@ -41,7 +41,7 @@ class FrameRepo(Downloadable):
                 module_parameters)
             self.__frame_end_modules_commands.put(frame_end_module_command)
 
-    def create_worker(self):
+    def create_worker(self) -> List[Thread]:
         threads: List[Thread] = []
         download_worker: DownloadWorker = DownloadWorker(
             self.__frame_commands, self.__download_status, None)

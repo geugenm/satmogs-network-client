@@ -1,5 +1,9 @@
+from threading import Thread
+from typing import List
+
+
 class Downloadable:
-    def create_worker(self):
+    def create_worker(self) -> List[Thread]:
         raise NotImplementedError()
 
     def register_command(self):

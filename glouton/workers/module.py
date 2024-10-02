@@ -1,14 +1,15 @@
 import logging
 import threading
-from queue import Queue
+from queue import Queue, Empty
+
 
 class ModuleWorker:
     def __init__(
-        self,
-        queue: Queue,
-        download_status: threading.Event,
-        is_download_finished: threading.Event,
-    ) -> None:
+            self,
+            queue: Queue,
+            download_status: threading.Event,
+            is_download_finished: threading.Event,
+    ):
         self._commands: Queue = queue
         self._download_status: threading.Event = download_status
         self._is_download_finished: threading.Event = is_download_finished
@@ -19,6 +20,10 @@ class ModuleWorker:
                 command = self._commands.get(block=True, timeout=1)
                 command.process()
                 self._commands.task_done()
+
+            except Empty:
+                continue
+
             except Exception as ex:
                 logging.error(f"Error processing module command: {ex}")
 

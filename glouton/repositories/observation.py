@@ -1,10 +1,10 @@
+import logging
 from threading import Thread
 from typing import List
 
 from glouton.repositories.downloadable import Downloadable
 from glouton.domain.parameters.program_cmd import ProgramCmd
 from glouton.clients.satnog_network import SatnogNetworkClient
-from glouton.shared import thread_helper
 from glouton.workers.page_scan import PageScanWorker
 
 
@@ -35,9 +35,20 @@ class ObservationRepo:
                 self.__cmd.start_date, self.__cmd.end_date)
 
     def __create_workers_and_wait(self):
+        self.__threads.clear()
+
         for repo in self.__repos:
-            self.__threads.extend(repo.create_worker())
-        thread_helper.wait(self.__threads)
+            workers = repo.create_worker()
+            for worker in workers:
+                if not worker.is_alive():
+                    worker.start()
+                    self.__threads.append(worker)
+
+        for thread in self.__threads:
+            try:
+                thread.join()
+            except Exception as ex:
+                logging.error(f"Error joining thread: {ex}")
 
     def __url_param_builder(self, page):
         return {'satellite__norad_cat_id': self.__cmd.norad_id,

@@ -1,6 +1,7 @@
 import os
 from queue import Queue
-from threading import Event
+from threading import Event, Thread
+from typing import List
 
 from glouton.commands.download.demoddataDownloadCommand import DemoddataDownloadCommand
 from glouton.commands.download.downloadCommandParams import DownloadCommandParams
@@ -42,7 +43,7 @@ class DemoddataRepo(Downloadable):
             self.__demoddata_end_modules_commands.put(
                 demoddata_end_module_command)
 
-    def create_worker(self):
+    def create_worker(self) -> List[Thread]:
         threads = []
         downloadWorker = DownloadWorker(
             self.__demoddata_commands, self.__download_status,

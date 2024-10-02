@@ -1,6 +1,7 @@
 import os
 from queue import Queue
-from threading import Event
+from threading import Event, Thread
+from typing import List
 
 from glouton.commands.download.archiveDownloadCommand import ArchiveDownloadCommand
 from glouton.commands.download.downloadCommandParams import DownloadCommandParams
@@ -40,7 +41,7 @@ class ArchiveRepo(Downloadable):
                 module_parameters)
             self.__archive_end_modules_commands.put(archive_end_module_command)
 
-    def create_worker(self):
+    def create_worker(self) -> List[Thread]:
         threads = []
         downloadWorker = DownloadWorker(
             self.__archive_commands, self.__download_status,
