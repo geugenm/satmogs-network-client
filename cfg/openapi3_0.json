@@ -1,0 +1,1599 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "",
+    "version": "0.0.0"
+  },
+  "paths": {
+    "/api/configuration/": {
+      "get": {
+        "operationId": "configuration_list",
+        "description": "SatNOGS Network Station Configuration API view class",
+        "tags": [
+          "configuration"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StationConfiguration"
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/configuration/{id}/": {
+      "get": {
+        "operationId": "configuration_retrieve",
+        "description": "SatNOGS Network Station Configuration API view class",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A unique integer value identifying this active station configuration.",
+            "required": true
+          }
+        ],
+        "tags": [
+          "configuration"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StationConfiguration"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/jobs/": {
+      "get": {
+        "operationId": "jobs_list",
+        "description": "SatNOGS Network Job API view class",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "end",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ground_station",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "observation_id",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "description": "Multiple values may be separated by commas.",
+            "explode": false,
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "observer",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "observer"
+          },
+          {
+            "in": "query",
+            "name": "satellite__norad_cat_id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                "bad",
+                "failed",
+                "future",
+                "good",
+                "unknown"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "transmitter_mode",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "transmitter_type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Transceiver",
+                "Transmitter",
+                "Transponder"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "transmitter_uuid",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "vetted_status",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                "bad",
+                "failed",
+                "good",
+                "unknown"
+              ]
+            },
+            "description": "Vetted status (deprecated: please use Status)"
+          },
+          {
+            "in": "query",
+            "name": "vetted_user",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Vetted user (deprecated: will be removed in next version)"
+          },
+          {
+            "in": "query",
+            "name": "waterfall_status",
+            "schema": {
+              "type": "boolean",
+              "nullable": true,
+              "enum": [
+                0,
+                1
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "jobs"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Job"
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/jobs/{id}/": {
+      "get": {
+        "operationId": "jobs_retrieve",
+        "description": "SatNOGS Network Job API view class",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A unique integer value identifying this observation.",
+            "required": true
+          }
+        ],
+        "tags": [
+          "jobs"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/observations/": {
+      "get": {
+        "operationId": "observations_list",
+        "description": "SatNOGS Network Observation API view class",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "The pagination cursor value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ground_station",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "observation_id",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "description": "Multiple values may be separated by commas.",
+            "explode": false,
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "observer",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "observer"
+          },
+          {
+            "in": "query",
+            "name": "satellite__norad_cat_id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                "bad",
+                "failed",
+                "future",
+                "good",
+                "unknown"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "transmitter_mode",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "transmitter_type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Transceiver",
+                "Transmitter",
+                "Transponder"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "transmitter_uuid",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "vetted_status",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                "bad",
+                "failed",
+                "good",
+                "unknown"
+              ]
+            },
+            "description": "Vetted status (deprecated: please use Status)"
+          },
+          {
+            "in": "query",
+            "name": "vetted_user",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Vetted user (deprecated: will be removed in next version)"
+          },
+          {
+            "in": "query",
+            "name": "waterfall_status",
+            "schema": {
+              "type": "boolean",
+              "nullable": true,
+              "enum": [
+                0,
+                1
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "observations"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedObservationList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "observations_create",
+        "description": "Creates observations from a list of observation data",
+        "tags": [
+          "observations"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewObservation"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/NewObservation"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/NewObservation"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewObservation"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/observations/{id}/": {
+      "get": {
+        "operationId": "observations_retrieve",
+        "description": "SatNOGS Network Observation API view class",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A unique integer value identifying this observation.",
+            "required": true
+          }
+        ],
+        "tags": [
+          "observations"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Observation"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "operationId": "observations_update",
+        "description": "Updates observation with audio, waterfall or demoded data",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A unique integer value identifying this observation.",
+            "required": true
+          }
+        ],
+        "tags": [
+          "observations"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateObservation"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateObservation"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateObservation"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateObservation"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "operationId": "observations_partial_update",
+        "description": "SatNOGS Network Observation API view class",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A unique integer value identifying this observation.",
+            "required": true
+          }
+        ],
+        "tags": [
+          "observations"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedObservation"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedObservation"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchedObservation"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Observation"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/station/register": {
+      "post": {
+        "operationId": "station_register_create",
+        "description": "API endpoint for receiving client_id and return url for registering new station or connect\nclient_id to existing one",
+        "tags": [
+          "station"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/stations/": {
+      "get": {
+        "operationId": "stations_list",
+        "description": "SatNOGS Network Station API view class",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "client_version",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "stations"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedStationList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/stations/{id}/": {
+      "get": {
+        "operationId": "stations_retrieve",
+        "description": "SatNOGS Network Station API view class",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A unique integer value identifying this station.",
+            "required": true
+          }
+        ],
+        "tags": [
+          "stations"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Station"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/transmitters/": {
+      "get": {
+        "operationId": "transmitters_retrieve",
+        "description": "Transmitter list API view",
+        "tags": [
+          "transmitters"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/api/transmitters/{transmitter_uuid}": {
+      "get": {
+        "operationId": "transmitters_retrieve_2",
+        "description": "API detail view for transmitter",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transmitter_uuid",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "transmitters"
+        ],
+        "security": [
+          {
+            "tokenAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DemodData": {
+        "type": "object",
+        "description": "SatNOGS Network DemodData API Serializer",
+        "properties": {
+          "payload_demod": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "payload_demod"
+        ]
+      },
+      "Job": {
+        "type": "object",
+        "description": "SatNOGS Network Job API Serializer",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ground_station": {
+            "type": "integer",
+            "nullable": true
+          },
+          "tle0": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tle1": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tle2": {
+            "type": "string",
+            "readOnly": true
+          },
+          "frequency": {
+            "type": "string",
+            "readOnly": true
+          },
+          "mode": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter": {
+            "type": "string",
+            "readOnly": true
+          },
+          "baud": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "baud",
+          "end",
+          "frequency",
+          "id",
+          "mode",
+          "start",
+          "tle0",
+          "tle1",
+          "tle2",
+          "transmitter"
+        ]
+      },
+      "NewObservation": {
+        "type": "object",
+        "description": "SatNOGS Network New Observation API Serializer",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ground_station": {
+            "type": "integer"
+          },
+          "transmitter_uuid": {
+            "type": "string",
+            "maxLength": 22,
+            "minLength": 22
+          },
+          "center_frequency": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "end",
+          "ground_station",
+          "start",
+          "transmitter_uuid"
+        ]
+      },
+      "Observation": {
+        "type": "object",
+        "description": "SatNOGS Network Observation API Serializer",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "ground_station": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter": {
+            "type": "string",
+            "readOnly": true
+          },
+          "norad_cat_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "payload": {
+            "type": "string",
+            "readOnly": true
+          },
+          "waterfall": {
+            "type": "string",
+            "readOnly": true
+          },
+          "demoddata": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DemodData"
+            }
+          },
+          "station_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "station_lat": {
+            "type": "string",
+            "readOnly": true
+          },
+          "station_lng": {
+            "type": "string",
+            "readOnly": true
+          },
+          "station_alt": {
+            "type": "string",
+            "readOnly": true
+          },
+          "vetted_status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "vetted_user": {
+            "type": "string",
+            "readOnly": true
+          },
+          "vetted_datetime": {
+            "type": "string",
+            "readOnly": true
+          },
+          "archived": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "archive_url": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true,
+            "nullable": true
+          },
+          "client_version": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "client_metadata": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "waterfall_status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "waterfall_status_user": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "waterfall_status_datetime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "nullable": true
+          },
+          "rise_azimuth": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true,
+            "nullable": true
+          },
+          "set_azimuth": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true,
+            "nullable": true
+          },
+          "max_altitude": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_uuid": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransmitterTypeEnum"
+              }
+            ],
+            "readOnly": true
+          },
+          "transmitter_uplink_low": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_uplink_high": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_uplink_drift": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_downlink_low": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_downlink_high": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_downlink_drift": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_mode": {
+            "type": "string",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_invert": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "transmitter_baud": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_updated": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter_status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tle0": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tle1": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tle2": {
+            "type": "string",
+            "readOnly": true
+          },
+          "center_frequency": {
+            "type": "string",
+            "readOnly": true
+          },
+          "observer": {
+            "type": "string",
+            "readOnly": true
+          },
+          "observation_frequency": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter_unconfirmed": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "archive_url",
+          "archived",
+          "center_frequency",
+          "end",
+          "ground_station",
+          "id",
+          "max_altitude",
+          "norad_cat_id",
+          "observation_frequency",
+          "observer",
+          "payload",
+          "rise_azimuth",
+          "set_azimuth",
+          "start",
+          "station_alt",
+          "station_lat",
+          "station_lng",
+          "station_name",
+          "status",
+          "tle0",
+          "tle1",
+          "tle2",
+          "transmitter",
+          "transmitter_baud",
+          "transmitter_description",
+          "transmitter_downlink_drift",
+          "transmitter_downlink_high",
+          "transmitter_downlink_low",
+          "transmitter_invert",
+          "transmitter_mode",
+          "transmitter_status",
+          "transmitter_type",
+          "transmitter_unconfirmed",
+          "transmitter_updated",
+          "transmitter_uplink_drift",
+          "transmitter_uplink_high",
+          "transmitter_uplink_low",
+          "transmitter_uuid",
+          "vetted_datetime",
+          "vetted_status",
+          "vetted_user",
+          "waterfall",
+          "waterfall_status",
+          "waterfall_status_datetime",
+          "waterfall_status_user"
+        ]
+      },
+      "PaginatedObservationList": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "type": "string",
+            "nullable": true
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Observation"
+            }
+          }
+        }
+      },
+      "PaginatedStationList": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Station"
+            }
+          }
+        }
+      },
+      "PatchedObservation": {
+        "type": "object",
+        "description": "SatNOGS Network Observation API Serializer",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "ground_station": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter": {
+            "type": "string",
+            "readOnly": true
+          },
+          "norad_cat_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "payload": {
+            "type": "string",
+            "readOnly": true
+          },
+          "waterfall": {
+            "type": "string",
+            "readOnly": true
+          },
+          "demoddata": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DemodData"
+            }
+          },
+          "station_name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "station_lat": {
+            "type": "string",
+            "readOnly": true
+          },
+          "station_lng": {
+            "type": "string",
+            "readOnly": true
+          },
+          "station_alt": {
+            "type": "string",
+            "readOnly": true
+          },
+          "vetted_status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "vetted_user": {
+            "type": "string",
+            "readOnly": true
+          },
+          "vetted_datetime": {
+            "type": "string",
+            "readOnly": true
+          },
+          "archived": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "archive_url": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true,
+            "nullable": true
+          },
+          "client_version": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "client_metadata": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "waterfall_status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "waterfall_status_user": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "waterfall_status_datetime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "nullable": true
+          },
+          "rise_azimuth": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true,
+            "nullable": true
+          },
+          "set_azimuth": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true,
+            "nullable": true
+          },
+          "max_altitude": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_uuid": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransmitterTypeEnum"
+              }
+            ],
+            "readOnly": true
+          },
+          "transmitter_uplink_low": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_uplink_high": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_uplink_drift": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_downlink_low": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_downlink_high": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_downlink_drift": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_mode": {
+            "type": "string",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_invert": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "transmitter_baud": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true,
+            "nullable": true
+          },
+          "transmitter_updated": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter_status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tle0": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tle1": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tle2": {
+            "type": "string",
+            "readOnly": true
+          },
+          "center_frequency": {
+            "type": "string",
+            "readOnly": true
+          },
+          "observer": {
+            "type": "string",
+            "readOnly": true
+          },
+          "observation_frequency": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transmitter_unconfirmed": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "Station": {
+        "type": "object",
+        "description": "SatNOGS Network Station API Serializer",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 45
+          },
+          "altitude": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "min_horizon": {
+            "type": "string",
+            "readOnly": true
+          },
+          "lat": {
+            "type": "number",
+            "format": "double",
+            "maximum": 90,
+            "minimum": -90,
+            "nullable": true,
+            "description": "eg. 38.01697"
+          },
+          "lng": {
+            "type": "number",
+            "format": "double",
+            "maximum": 180,
+            "minimum": -180,
+            "nullable": true,
+            "description": "eg. 23.7314"
+          },
+          "qthlocator": {
+            "type": "string",
+            "maxLength": 8
+          },
+          "antenna": {
+            "type": "string",
+            "readOnly": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "last_seen": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "readOnly": true
+          },
+          "observations": {
+            "type": "string",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Max 500 characters",
+            "maxLength": 500
+          },
+          "client_version": {
+            "type": "string",
+            "maxLength": 45
+          },
+          "target_utilization": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "nullable": true,
+            "description": "Target utilization factor for your station"
+          }
+        },
+        "required": [
+          "altitude",
+          "antenna",
+          "created",
+          "id",
+          "min_horizon",
+          "name",
+          "observations",
+          "status"
+        ]
+      },
+      "StationConfiguration": {
+        "type": "object",
+        "description": "SatNOGS Network Station Configuration API Serializer",
+        "properties": {
+          "configuration": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        }
+      },
+      "TransmitterTypeEnum": {
+        "enum": [
+          "Transmitter",
+          "Transceiver",
+          "Transponder"
+        ],
+        "type": "string"
+      },
+      "UpdateObservation": {
+        "type": "object",
+        "description": "SatNOGS Network Observation API Serializer for uploading audio and waterfall.\nThis is Serializer is used temporarily until waterfall_old and payload_old fields are removed.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "payload": {
+            "type": "string",
+            "format": "uri"
+          },
+          "waterfall": {
+            "type": "string",
+            "format": "uri"
+          },
+          "client_metadata": {
+            "type": "string"
+          },
+          "client_version": {
+            "type": "string",
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "tokenAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Token-based authentication with required prefix \"Token\""
+      }
+    }
+  }
+}

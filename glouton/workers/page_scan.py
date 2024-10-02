@@ -1,3 +1,5 @@
+# More info here - https://docs.satnogs.org/projects/satnogs-network/en/stable/api.html
+
 import logging
 import time
 from typing import Dict, Any, List
