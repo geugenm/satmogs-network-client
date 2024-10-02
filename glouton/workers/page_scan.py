@@ -1,14 +1,13 @@
 import logging
 import time
-from threading import Event
 from typing import Dict, Any, List
 from tqdm import tqdm
 
 import requests
 
-from glouton.domain.interfaces.downloadable import Downloadable
-from glouton.domain.parameters.programCmd import ProgramCmd
-from glouton.infrastructure.satnogClient import SatnogClient
+from glouton.repositories.downloadable import Downloadable
+from glouton.domain.parameters.program_cmd import ProgramCmd
+from glouton.clients.satnog import SatnogClient
 
 
 class PageScanWorker:
@@ -66,10 +65,6 @@ class PageScanWorker:
 
     def _process_data(self, elements: Dict[str, Any]) -> None:
         logging.info(f"Incoming data: {elements}")
-
-        # temp hack for api/telemetry
-        if elements.__contains__('result'):
-            elements = elements['result']
 
         for element in elements:
             for repo in self.repos:

@@ -1,7 +1,7 @@
 from glouton.commands.download.downloadCommand import DownloadCommand
 from glouton.commands.module.telemetryModuleCommand import TelemetryModuleCommand
 from glouton.commands.module.telemetryModuleCommandParams import TelemetryModuleCommandParams
-from glouton.infrastructure.satnogDbClient import SatnogDbClient
+from glouton.clients.satnog_db import SatnogDbClient
 
 
 class DownloadTelemetryCommand(DownloadCommand):

@@ -1,7 +1,7 @@
 from typing import List
 
-from glouton.domain.interfaces.downloadable import Downloadable
-from glouton.domain.parameters.programCmd import ProgramCmd
+from glouton.repositories.downloadable import Downloadable
+from glouton.domain.parameters.program_cmd import ProgramCmd
 from glouton.repositories.archive import ArchiveRepo
 from glouton.repositories.demoddata import DemoddataRepo
 from glouton.repositories.observation import ObservationRepo

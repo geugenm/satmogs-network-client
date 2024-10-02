@@ -6,7 +6,7 @@ from glouton.commands.download.archiveDownloadCommand import ArchiveDownloadComm
 from glouton.commands.download.downloadCommandParams import DownloadCommandParams
 from glouton.commands.module.endModuleCommand import EndModuleCommand
 from glouton.commands.module.endModuleCommandParams import EndModuleCommandParams
-from glouton.domain.interfaces.downloadable import Downloadable
+from glouton.repositories.downloadable import Downloadable
 from glouton.shared import thread_helper
 from glouton.workers.download import DownloadWorker
 from glouton.workers.end_module import EndModuleWorker

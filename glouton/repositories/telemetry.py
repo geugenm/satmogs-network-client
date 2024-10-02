@@ -3,8 +3,8 @@ from threading import Event
 from threading import Thread
 from typing import List, Dict
 
-from glouton.domain.parameters.programCmd import ProgramCmd
-from glouton.infrastructure.satnogDbClient import SatnogDbClient
+from glouton.domain.parameters.program_cmd import ProgramCmd
+from glouton.clients.satnog_db import SatnogDbClient
 from glouton.shared import thread_helper
 from glouton.workers.page_scan import PageScanWorker
 

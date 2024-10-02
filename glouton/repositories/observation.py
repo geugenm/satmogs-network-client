@@ -1,9 +1,9 @@
 from threading import Thread
 from typing import List
 
-from glouton.domain.interfaces.downloadable import Downloadable
-from glouton.domain.parameters.programCmd import ProgramCmd
-from glouton.infrastructure.satnogNetworkClient import SatnogNetworkClient
+from glouton.repositories.downloadable import Downloadable
+from glouton.domain.parameters.program_cmd import ProgramCmd
+from glouton.clients.satnog_network import SatnogNetworkClient
 from glouton.shared import thread_helper
 from glouton.workers.page_scan import PageScanWorker
 

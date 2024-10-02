@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from glouton.domain.parameters.programCmd import ProgramCmd
+from glouton.domain.parameters.program_cmd import ProgramCmd
 from glouton.services.observation import ObservationsService
 from glouton.services.telemetry import TelemetryService
 

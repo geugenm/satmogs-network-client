@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from glouton.services.telemetry import TelemetryService
 from glouton.services.session import SessionService
-from glouton.domain.parameters.programCmd import ProgramCmd
+from glouton.domain.parameters.program_cmd import ProgramCmd
 import logging
 import argparse
 import sys

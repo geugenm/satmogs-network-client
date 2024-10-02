@@ -2,8 +2,8 @@ import os
 import mock
 import pytest
 import requests
-from glouton.infrastructure.satnogNetworkClient import SatnogNetworkClient
-from glouton.infrastructure.satnogDbClient import SatnogDbClient
+from glouton.clients.satnog_network import SatnogNetworkClient
+from glouton.clients.satnog_db import SatnogDbClient
 
 
 @mock.patch.dict(os.environ, {"SATNOGS_NETWORK_API_URL": "network_url_from_env"})

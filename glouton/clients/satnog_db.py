@@ -2,7 +2,7 @@ import os
 
 import requests
 
-from glouton.infrastructure.satnogClient import SatnogClient
+from glouton.clients.satnog import SatnogClient
 
 
 class SatnogDbClient(SatnogClient):

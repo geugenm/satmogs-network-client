@@ -1,4 +1,4 @@
-from glouton.domain.parameters.programCmd import ProgramCmd
+from glouton.domain.parameters.program_cmd import ProgramCmd
 from glouton.repositories.frame import FrameRepo
 from glouton.repositories.telemetry import TelemetryRepo
 from glouton.services.module import ModuleService
