@@ -15,22 +15,22 @@ from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
-    *,
-    cursor: Union[Unset, str] = UNSET,
-    end: Union[Unset, datetime.datetime] = UNSET,
-    ground_station: Union[Unset, int] = UNSET,
-    id: Union[Unset, int] = UNSET,
-    observation_id: Union[Unset, List[int]] = UNSET,
-    observer: Union[Unset, int] = UNSET,
-    satellite_norad_cat_id: Union[Unset, int] = UNSET,
-    start: Union[Unset, datetime.datetime] = UNSET,
-    status: Union[Unset, ObservationsListStatus] = UNSET,
-    transmitter_mode: Union[Unset, str] = UNSET,
-    transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
-    transmitter_uuid: Union[Unset, str] = UNSET,
-    vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
-    vetted_user: Union[Unset, int] = UNSET,
-    waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
+        *,
+        cursor: Union[Unset, str] = UNSET,
+        end: Union[Unset, datetime.datetime] = UNSET,
+        ground_station: Union[Unset, int] = UNSET,
+        id: Union[Unset, int] = UNSET,
+        observation_id: Union[Unset, List[int]] = UNSET,
+        observer: Union[Unset, int] = UNSET,
+        satellite_norad_cat_id: Union[Unset, int] = UNSET,
+        start: Union[Unset, datetime.datetime] = UNSET,
+        status: Union[Unset, ObservationsListStatus] = UNSET,
+        transmitter_mode: Union[Unset, str] = UNSET,
+        transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
+        transmitter_uuid: Union[Unset, str] = UNSET,
+        vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
+        vetted_user: Union[Unset, int] = UNSET,
+        waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
 ) -> Dict[str, Any]:
     params: Dict[str, Any] = {}
 
@@ -102,10 +102,35 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+        *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[PaginatedObservationList]:
     if response.status_code == HTTPStatus.OK:
-        response_200 = PaginatedObservationList.from_dict(response.json())
+        # Hack: The SatNOGS OpenAPI documentation is misleading regarding pagination.
+        # The 'next' and 'previous' links are not included in the JSON response body,
+        # but instead are provided in the response headers.
+        link_header: Any = response.headers.get('link', '')
+        next_link: Optional[str] = None
+        previous_link: Optional[str] = None
+
+        if link_header:
+            for link in link_header.split(','):
+                # Split the link into URL and rel part
+                parts = link.split(';')
+                url = parts[0].strip()[1:-1]  # Remove angle brackets
+                rel = parts[1].strip().split('=')[1][1:-1]  # Extract rel value
+
+                if rel == 'next':
+                    next_link = url
+                elif rel == 'previous':
+                    previous_link = url
+
+        response_200 = PaginatedObservationList.from_dict(
+            {
+                'results': (response.json()),
+                'previous': previous_link,
+                'next': next_link,
+            }
+        )
 
         return response_200
     if client.raise_on_unexpected_status:
@@ -115,7 +140,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+        *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Response[PaginatedObservationList]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -126,23 +151,23 @@ def _build_response(
 
 
 def sync_detailed(
-    *,
-    client: AuthenticatedClient,
-    cursor: Union[Unset, str] = UNSET,
-    end: Union[Unset, datetime.datetime] = UNSET,
-    ground_station: Union[Unset, int] = UNSET,
-    id: Union[Unset, int] = UNSET,
-    observation_id: Union[Unset, List[int]] = UNSET,
-    observer: Union[Unset, int] = UNSET,
-    satellite_norad_cat_id: Union[Unset, int] = UNSET,
-    start: Union[Unset, datetime.datetime] = UNSET,
-    status: Union[Unset, ObservationsListStatus] = UNSET,
-    transmitter_mode: Union[Unset, str] = UNSET,
-    transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
-    transmitter_uuid: Union[Unset, str] = UNSET,
-    vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
-    vetted_user: Union[Unset, int] = UNSET,
-    waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
+        *,
+        client: AuthenticatedClient,
+        cursor: Union[Unset, str] = UNSET,
+        end: Union[Unset, datetime.datetime] = UNSET,
+        ground_station: Union[Unset, int] = UNSET,
+        id: Union[Unset, int] = UNSET,
+        observation_id: Union[Unset, List[int]] = UNSET,
+        observer: Union[Unset, int] = UNSET,
+        satellite_norad_cat_id: Union[Unset, int] = UNSET,
+        start: Union[Unset, datetime.datetime] = UNSET,
+        status: Union[Unset, ObservationsListStatus] = UNSET,
+        transmitter_mode: Union[Unset, str] = UNSET,
+        transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
+        transmitter_uuid: Union[Unset, str] = UNSET,
+        vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
+        vetted_user: Union[Unset, int] = UNSET,
+        waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
 ) -> Response[PaginatedObservationList]:
     """SatNOGS Network Observation API view class
 
@@ -197,23 +222,23 @@ def sync_detailed(
 
 
 def sync(
-    *,
-    client: AuthenticatedClient,
-    cursor: Union[Unset, str] = UNSET,
-    end: Union[Unset, datetime.datetime] = UNSET,
-    ground_station: Union[Unset, int] = UNSET,
-    id: Union[Unset, int] = UNSET,
-    observation_id: Union[Unset, List[int]] = UNSET,
-    observer: Union[Unset, int] = UNSET,
-    satellite_norad_cat_id: Union[Unset, int] = UNSET,
-    start: Union[Unset, datetime.datetime] = UNSET,
-    status: Union[Unset, ObservationsListStatus] = UNSET,
-    transmitter_mode: Union[Unset, str] = UNSET,
-    transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
-    transmitter_uuid: Union[Unset, str] = UNSET,
-    vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
-    vetted_user: Union[Unset, int] = UNSET,
-    waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
+        *,
+        client: AuthenticatedClient,
+        cursor: Union[Unset, str] = UNSET,
+        end: Union[Unset, datetime.datetime] = UNSET,
+        ground_station: Union[Unset, int] = UNSET,
+        id: Union[Unset, int] = UNSET,
+        observation_id: Union[Unset, List[int]] = UNSET,
+        observer: Union[Unset, int] = UNSET,
+        satellite_norad_cat_id: Union[Unset, int] = UNSET,
+        start: Union[Unset, datetime.datetime] = UNSET,
+        status: Union[Unset, ObservationsListStatus] = UNSET,
+        transmitter_mode: Union[Unset, str] = UNSET,
+        transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
+        transmitter_uuid: Union[Unset, str] = UNSET,
+        vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
+        vetted_user: Union[Unset, int] = UNSET,
+        waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
 ) -> Optional[PaginatedObservationList]:
     """SatNOGS Network Observation API view class
 
@@ -263,23 +288,23 @@ def sync(
 
 
 async def asyncio_detailed(
-    *,
-    client: AuthenticatedClient,
-    cursor: Union[Unset, str] = UNSET,
-    end: Union[Unset, datetime.datetime] = UNSET,
-    ground_station: Union[Unset, int] = UNSET,
-    id: Union[Unset, int] = UNSET,
-    observation_id: Union[Unset, List[int]] = UNSET,
-    observer: Union[Unset, int] = UNSET,
-    satellite_norad_cat_id: Union[Unset, int] = UNSET,
-    start: Union[Unset, datetime.datetime] = UNSET,
-    status: Union[Unset, ObservationsListStatus] = UNSET,
-    transmitter_mode: Union[Unset, str] = UNSET,
-    transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
-    transmitter_uuid: Union[Unset, str] = UNSET,
-    vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
-    vetted_user: Union[Unset, int] = UNSET,
-    waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
+        *,
+        client: AuthenticatedClient,
+        cursor: Union[Unset, str] = UNSET,
+        end: Union[Unset, datetime.datetime] = UNSET,
+        ground_station: Union[Unset, int] = UNSET,
+        id: Union[Unset, int] = UNSET,
+        observation_id: Union[Unset, List[int]] = UNSET,
+        observer: Union[Unset, int] = UNSET,
+        satellite_norad_cat_id: Union[Unset, int] = UNSET,
+        start: Union[Unset, datetime.datetime] = UNSET,
+        status: Union[Unset, ObservationsListStatus] = UNSET,
+        transmitter_mode: Union[Unset, str] = UNSET,
+        transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
+        transmitter_uuid: Union[Unset, str] = UNSET,
+        vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
+        vetted_user: Union[Unset, int] = UNSET,
+        waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
 ) -> Response[PaginatedObservationList]:
     """SatNOGS Network Observation API view class
 
@@ -332,23 +357,23 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    *,
-    client: AuthenticatedClient,
-    cursor: Union[Unset, str] = UNSET,
-    end: Union[Unset, datetime.datetime] = UNSET,
-    ground_station: Union[Unset, int] = UNSET,
-    id: Union[Unset, int] = UNSET,
-    observation_id: Union[Unset, List[int]] = UNSET,
-    observer: Union[Unset, int] = UNSET,
-    satellite_norad_cat_id: Union[Unset, int] = UNSET,
-    start: Union[Unset, datetime.datetime] = UNSET,
-    status: Union[Unset, ObservationsListStatus] = UNSET,
-    transmitter_mode: Union[Unset, str] = UNSET,
-    transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
-    transmitter_uuid: Union[Unset, str] = UNSET,
-    vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
-    vetted_user: Union[Unset, int] = UNSET,
-    waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
+        *,
+        client: AuthenticatedClient,
+        cursor: Union[Unset, str] = UNSET,
+        end: Union[Unset, datetime.datetime] = UNSET,
+        ground_station: Union[Unset, int] = UNSET,
+        id: Union[Unset, int] = UNSET,
+        observation_id: Union[Unset, List[int]] = UNSET,
+        observer: Union[Unset, int] = UNSET,
+        satellite_norad_cat_id: Union[Unset, int] = UNSET,
+        start: Union[Unset, datetime.datetime] = UNSET,
+        status: Union[Unset, ObservationsListStatus] = UNSET,
+        transmitter_mode: Union[Unset, str] = UNSET,
+        transmitter_type: Union[Unset, ObservationsListTransmitterType] = UNSET,
+        transmitter_uuid: Union[Unset, str] = UNSET,
+        vetted_status: Union[Unset, ObservationsListVettedStatus] = UNSET,
+        vetted_user: Union[Unset, int] = UNSET,
+        waterfall_status: Union[Unset, ObservationsListWaterfallStatus] = UNSET,
 ) -> Optional[PaginatedObservationList]:
     """SatNOGS Network Observation API view class
 
