@@ -3,6 +3,9 @@
 # glouton-satnogs-data-downloader
 This cli app is a downloader for the data provided by the satnogs network and the [satnogs db APIs](https://db.satnogs.org/api/schema/docs/).
 
+P.S. Observations are taken form [here](https://network.satnogs.org/api/)
+More info on the [API](https://db.satnogs.org/api/schema/docs/)
+
 Installation :
 -------
 ```
