@@ -25,6 +25,7 @@ setup(
         "dev": ["black", "flake8"],
     },
     packages=find_packages(exclude=["tests", "docs"]),
+    data_files=[('satnogs_network_client', ['config.ini'])],
     keywords="satnogs telemetry satellite archive data network download",
     classifiers=[
         "Development Status :: 3 - Alpha",
