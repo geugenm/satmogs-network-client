@@ -5,7 +5,7 @@ description = "A Python client for interacting with the SATNOGS Network API."
 authors = ["evgeniy.gleba <glebajk@gmail.com>"]
 license = "MIT"
 readme = "readme.md"
-packages = [{include = "satnogs_net_api"}]
+packages = [{include = "satnogs_fetcher"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

@@ -43,7 +43,7 @@ pip install openapi-python-client
 Once you have installed the client, you can generate the Python client by running the following command:
 
 ```bash
-openapi-python-client generate --path openapi3_0.json 
+openapi-python-client generate --path openapi3_0.json
 ```
 
 ## Note 

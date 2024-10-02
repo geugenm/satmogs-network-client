@@ -1,4 +1,5 @@
 import configparser
+import logging
 import pathlib
 import urllib.request
 from datetime import datetime
@@ -31,12 +32,18 @@ def download(observations: list[Observation], cache_dir: pathlib.Path) -> None:
 
                 print(f"downloaded {retrieve_result[0]}")
 
-                parse_to_csv(file_name=filename, full_path=cache_dir)
+                try:
+                    parse_to_csv(file_name=filename, full_path=cache_dir)
+                except Exception as e:
+                    logging.exception(f"Failed to parse: {e}")
 
 
 def main() -> None:
     config = configparser.ConfigParser()
     config.read('config.ini')
+
+    if not config:
+        raise ValueError('config.ini not found')
 
     base_url = config['API']['base_url']
     token = config['API']['token']
