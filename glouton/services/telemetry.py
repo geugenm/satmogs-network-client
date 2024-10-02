@@ -5,20 +5,21 @@ from glouton.services.module import ModuleService
 
 
 class TelemetryService:
-    def __init__(self, cmd):
-        self.__cmd: ProgramCmd = cmd
-        self.__module_service: ModuleService = ModuleService(self.__cmd.working_dir)
-        repos = self.filter_repositories()
-        self.__telemetry_repo: TelemetryRepo = TelemetryRepo(self.__cmd, repos)
+    def __init__(self, cmd: ProgramCmd) -> None:
+        self._cmd: ProgramCmd = cmd
+        self._module_service: ModuleService = ModuleService(cmd.working_dir)
 
-    def filter_repositories(self):
-        downloadable_data_repos = [FrameRepo(self.__cmd.working_dir,
-                                             self.__module_service.loadFrameModules(self.__cmd.frame_modules,
-                                                                                    'FOR_EACH'),
-                                             self.__module_service.loadFrameModules(self.__cmd.frame_end_modules,
-                                                                                    'END'))]
+        frame_repo: FrameRepo = FrameRepo(
+            cmd.working_dir,
+            self._module_service.loadFrameModules(
+                cmd.frame_modules, "FOR_EACH"
+            ),
+            self._module_service.loadFrameModules(
+                cmd.frame_end_modules, "END"
+            ),
+        )
 
-        return downloadable_data_repos
+        self._telemetry_repo: TelemetryRepo = TelemetryRepo(cmd, [frame_repo])
 
-    def extract(self):
-        self.__telemetry_repo.extract()
+    def extract(self) -> None:
+        self._telemetry_repo.extract()

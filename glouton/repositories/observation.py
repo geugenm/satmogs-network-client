@@ -1,36 +1,33 @@
-from threading import Event
+from threading import Thread
+from typing import List
 
+from glouton.domain.interfaces.downloadable import Downloadable
+from glouton.domain.parameters.programCmd import ProgramCmd
 from glouton.infrastructure.satnogNetworkClient import SatnogNetworkClient
 from glouton.shared import thread_helper
 from glouton.workers.page_scan import PageScanWorker
 
 
 class ObservationRepo:
-    def __init__(self, cmd, repos):
-        self.OBSERVATION_URL = 'observations/'
-        self.__repos = repos
-        self.__cmd = cmd
-        self.__threads = []
+    def __init__(self, cmd: ProgramCmd, repos: List[Downloadable]):
+        self.OBSERVATION_URL: str = 'observations/'
+        self.__repos: List[Downloadable] = repos
+        self.__cmd: ProgramCmd = cmd
+        self.__threads: List[Thread] = []
 
     def extract(self):
         client: SatnogNetworkClient = SatnogNetworkClient()
         page_counter: int = 0
-        end_signal: Event = Event()
 
-        page_scanner = PageScanWorker(
-            client, self.__cmd, self.__repos, self.OBSERVATION_URL, self.__url_param_builder(page_counter), end_signal)
+        page_scanner: PageScanWorker = PageScanWorker(
+            client, self.__cmd, self.__repos, self.OBSERVATION_URL, self.__url_param_builder(page_counter))
 
         while True:
             page_scanner.scan_page_for_obs(page_counter)
-            if end_signal.is_set():
-                break
 
             page_counter += 1
-            print("\ndownloading started (Ctrl + C to stop)...\t~(  ^o^)~")
             self.__register_end_command()
             self.__create_workers_and_wait()
-
-
 
     def __register_end_command(self):
         for repo in self.__repos:

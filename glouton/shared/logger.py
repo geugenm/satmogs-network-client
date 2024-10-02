@@ -1,5 +1,4 @@
 import logging
-
 from glouton.shared import config
 
 if config is not None:

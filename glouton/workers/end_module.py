@@ -1,16 +1,30 @@
+import logging
+import threading
+from queue import Queue
+
+from glouton.commands.module.endModuleCommand import EndModuleCommand
+
+
 class EndModuleWorker:
-    def __init__(self, queue, download_end_status):
-        self.__commands = queue
-        self.__download_end_status = download_end_status
+    def __init__(
+        self,
+        queue: Queue[EndModuleCommand],
+        download_end_status: threading.Event,
+    ) -> None:
+        self._commands: Queue[EndModuleCommand] = queue
+        self._download_end_status: threading.Event = download_end_status
 
-    def execute(self):
-        self.__download_end_status.wait()
-        while self.__commands.empty() == False:
+    def execute(self) -> None:
+        self._download_end_status.wait()
+
+        while not self._commands.empty():
             try:
-                command = self.__commands.get()
+                command = self._commands.get()
                 command.process()
-                self.__commands.task_done()
-            except:
-                pass
+                self._commands.task_done()
+            except Exception as ex:
+                logging.error(
+                    f"Error processing end module command: {ex}"
+                )
 
-        self.__download_end_status.clear()
+        self._download_end_status.clear()

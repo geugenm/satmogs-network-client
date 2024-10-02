@@ -19,11 +19,8 @@ class TelemetryRepo:
 
     def extract(self):
         client: SatnogDbClient = SatnogDbClient()
-        end_signal: Event = Event()
 
         page_counter: int = 0
-
-        threads: List[Thread] = []
 
         page_scanner: PageScanWorker = PageScanWorker(
             client,
@@ -31,14 +28,10 @@ class TelemetryRepo:
             self.__repos,
             self.TELEMETRY_URL,
             self.__url_param_builder(page_counter),
-            end_signal,
         )
 
         while True:
             page_scanner.scan_page(page_counter)
-            if end_signal.is_set():
-                break
-
             page_counter += 1
 
             self.__register_end_command()

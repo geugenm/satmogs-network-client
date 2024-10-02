@@ -1,26 +1,25 @@
 import logging
 import time
 from threading import Event
-from typing import Dict, Any
+from typing import Dict, Any, List
 from tqdm import tqdm
 
 import requests
 
+from glouton.domain.interfaces.downloadable import Downloadable
 from glouton.domain.parameters.programCmd import ProgramCmd
+from glouton.infrastructure.satnogClient import SatnogClient
 
 
 class PageScanWorker:
-    def __init__(self, client, cmd: ProgramCmd, repos, path, url_params: Dict[str, str], end_signal: Event):
-        self.client = client
+    def __init__(self, client: SatnogClient, cmd: ProgramCmd, repos: List[Downloadable], base_url:str , url_params: Dict[str, str]):
+        self.client: SatnogClient = client
         self.cmd: ProgramCmd = cmd
-        self.repos = repos
-        self.path = path
+        self.repos: List[Downloadable] = repos
+        self.base_url: str = base_url
         self.url_params: Dict[str, str] = url_params
-        self.end_signal: Event = end_signal
 
     def scan(self) -> None:
-        logging.info(f"Scanning page {self.url_params['Link']}...")
-
         max_retries: int = 3
         for attempt in range(0, max_retries):
             try:
@@ -32,10 +31,8 @@ class PageScanWorker:
                     self._handle_rate_limit(e)
                 else:
                     logging.error(f"HTTP error: {e}, response_info: {e.response.json()}")
-                    self.end_signal.set()
             except Exception as e:
                 logging.error(f"Error processing data: {e}")
-                self.end_signal.set()
 
     def scan_page(self, page: int) -> None:
         self.url_params['page'] = str(page)
@@ -47,7 +44,7 @@ class PageScanWorker:
         self.scan()
 
     def _make_request(self) -> requests.Response:
-        response = self.client.get_from_base(self.path, self.url_params)
+        response = self.client.get_from_base(self.base_url, self.url_params)
         response.raise_for_status()
         return response
 
@@ -69,6 +66,11 @@ class PageScanWorker:
 
     def _process_data(self, elements: Dict[str, Any]) -> None:
         logging.info(f"Incoming data: {elements}")
+
+        # temp hack for api/telemetry
+        if elements.__contains__('result'):
+            elements = elements['result']
+
         for element in elements:
             for repo in self.repos:
                 repo.register_download_command(element, self.cmd.start_date, self.cmd.end_date)
