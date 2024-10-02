@@ -12,7 +12,7 @@ def load_requirements(file_name):
 
 setup(
     version="0.1.0",
-    name="satnogs_network_client",
+    name="satnogs-network-client-api",
     description="A Python client for interacting with the SATNOGS Network API.",
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -25,7 +25,6 @@ setup(
         "dev": ["black", "flake8"],
     },
     packages=find_packages(exclude=["tests", "docs"]),
-    data_files=[('satnogs_network_client', ['config.ini'])],
     keywords="satnogs telemetry satellite archive data network download",
     classifiers=[
         "Development Status :: 3 - Alpha",
